@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <h1>模板</h1>
+  <div
+    class="w-full h-full mt-20px flex flex-col justify-center items-center"
+    data-theme="dark"
+  >
+    <div class="btn">测试</div>
   </div>
 </template>
 
