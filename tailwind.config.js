@@ -8,7 +8,9 @@ export default {
   },
   plugins: [daisyui],
   daisyui: {
-    themes: ['light', 'dark'],
-    darkTheme: 'dark', // name of one of the included themes for dark mode
+    themes: ['cupcake', 'night'],
+    darkTheme: 'night', // name of one of the included themes for dark mode
+    prefix: 'd-',
+    logs: false,
   },
 };

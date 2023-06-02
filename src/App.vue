@@ -1,18 +1,24 @@
 <template>
   <div
-    class="w-full h-full mt-20px flex flex-col justify-center items-center"
-    data-theme="dark"
+    class="w-screen h-screen flex flex-col justify-center items-center"
+    :data-theme="isDark ? 'night' : 'cupcake'"
   >
-    <div class="btn">测试</div>
+    <base-layout>
+      <router-view v-slot="{ Component }">
+        <component :is="Component" v-motion-slide-bottom></component>
+      </router-view>
+    </base-layout>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// dark theme
+const isDark = useDark();
 
-<style lang="pcss" scoped>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+// window.utools.onPluginEnter(({ code, type, payload }) => {});
+</script>
+
+<style scoped>
 @font-face {
   font-family: Emoji;
   src: local('Apple Color Emojiji'), local('Segoe UI Emoji'),

@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .card-board {
+    @apply border-2 border-primary/20 rounded-lg;
+  }
+}

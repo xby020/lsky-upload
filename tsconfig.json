@@ -24,7 +24,7 @@
       "@/*": ["src/*"],
       "@pages/*": ["src/pages/*"]
     },
-    "types": ["unplugin-icons/types/vue"],
+    "types": ["unplugin-icons/types/vue", "utools-api-types"],
     "typeRoots": ["./node_modules/@types"]
   },
   "include": [

@@ -14,7 +14,13 @@
         "图床",
         {
           "type": "img",
-          "label": "上传图片"
+          "label": "将图片上传到你的兰空图床"
+        },
+        {
+          "type": "files",
+          "label": "将图片文件上传到你的兰空图床",
+          "fileType": "file",
+          "match": "/\\.(png|jpg|jpeg|gif|bmp|webp|svg|psd|ico|tif|tiff|raw|tga|exif|fpx|svgz|cdr|pcd|dxf|ufo|eps|ai|hdri|heic|heif|jfif|jpe|jif|jfif-tbnl|jfi)$/i"
         }
       ]
     }
