@@ -1,8 +1,16 @@
 {
+  "name": "z8as2pxz",
+  "version": "0.0.1",
+  "pluginName": "lsky-upload",
+  "description": "将图片上传到你的兰空图床",
+  "author": "PotatoForge",
+  "homepage": "https://xby020.cn",
   "main": "index.html",
   "logo": "logo.png",
+  "preload": "preload.js",
   "development": {
-    "main": "http://127.0.0.1:2333"
+    "main": "http://127.0.0.1:2333",
+    "preload": "preload.js"
   },
   "features": [
     {
@@ -14,11 +22,11 @@
         "图床",
         {
           "type": "img",
-          "label": "将图片上传到你的兰空图床"
+          "label": "图片上传"
         },
         {
           "type": "files",
-          "label": "将图片文件上传到你的兰空图床",
+          "label": "图片文件上传",
           "fileType": "file",
           "match": "/\\.(png|jpg|jpeg|gif|bmp|webp|svg|psd|ico|tif|tiff|raw|tga|exif|fpx|svgz|cdr|pcd|dxf|ufo|eps|ai|hdri|heic|heif|jfif|jpe|jif|jfif-tbnl|jfi)$/i"
         }

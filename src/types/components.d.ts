@@ -10,8 +10,6 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BaseLayout: typeof import('./../components/layout/BaseLayout.vue')['default']
-    IMdiInfomation: typeof import('~icons/mdi/infomation')['default']
-    IMdiInformation: typeof import('~icons/mdi/information')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

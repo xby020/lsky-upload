@@ -34,12 +34,29 @@
 </template>
 
 <script setup lang="ts">
-const isDark = window.utools.isDarkColors();
+import { base64ToBuffer, getFiles } from '@/preload';
+import dayjs from 'dayjs';
+import { isDarkColors, onPluginEnter } from 'uTools';
 
-const uploadList = ref([]);
+const isDark = isDarkColors();
 
-window.utools.onPluginEnter(({ code, type, payload }) => {
+const uploadList = ref<File[]>([]);
+
+onPluginEnter(({ code, type, payload }) => {
   console.log(code, type, payload);
+
+  if (code === 'upload') {
+    if (type === 'files') {
+      const files = getFiles(payload);
+      console.log(files);
+    }
+    if (type === 'img') {
+      // 获取三位随机字符
+      const randomStr = Math.random().toString(36).slice(-3);
+      const fileBolb = base64ToBuffer(payload);
+      console.log(fileBolb);
+    }
+  }
 });
 </script>
 

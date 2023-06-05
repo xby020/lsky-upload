@@ -12,10 +12,10 @@
 </template>
 
 <script setup lang="ts">
-// dark theme
-const isDark = useDark();
+import { isDarkColors } from 'uTools';
 
-// window.utools.onPluginEnter(({ code, type, payload }) => {});
+// dark theme
+const isDark = isDarkColors();
 </script>
 
 <style scoped>

@@ -6,6 +6,8 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import UnoCSS from 'unocss/vite';
+import utools from 'vite-plugin-utools';
+// import { createPreloadPlugin } from 'vite-plugin-utools-helper';
 
 // https://vitejs.dev/config/
 export default ({ mode }: ConfigEnv): UserConfigExport => {
@@ -44,6 +46,21 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
 
       // auto import icons
       Icons({ compiler: 'vue3' }),
+
+      // // utools preload
+      utools({
+        external: 'uTools',
+        preload: {
+          path: './src/preload.ts',
+          watch: true,
+          name: 'window.preload',
+        },
+        buildUpx: {
+          pluginPath: './plugin.json',
+          outDir: 'upx',
+          outName: '[pluginName]_[version].upx',
+        },
+      }),
     ],
 
     resolve: {
