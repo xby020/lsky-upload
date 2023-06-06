@@ -15,7 +15,7 @@
 import { isDarkColors } from 'uTools';
 
 // dark theme
-const isDark = isDarkColors();
+const isDark = useDark();
 </script>
 
 <style scoped>
