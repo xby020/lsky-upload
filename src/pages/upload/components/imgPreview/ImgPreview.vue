@@ -16,8 +16,13 @@
         </h2>
         <!-- info -->
         <div class="flex gap-2 py-2">
+          <!-- size -->
           <div class="d-badge d-badge-accent d-badge-md d-badge-outline">
             {{ `${select.size}${select.sizeUnit}` }}
+          </div>
+          <!-- image width and height -->
+          <div class="d-badge d-badge-accent d-badge-md d-badge-outline">
+            {{ `${width} x ${height}` }}
           </div>
         </div>
       </div>
@@ -50,7 +55,29 @@ const emits = defineEmits(['update:files']);
 
 async function getImageSize(file: File) {
   // 从File对象中获取图片的宽高
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.src = url;
+  return new Promise<{ width: number; height: number }>((resolve) => {
+    img.onload = () => {
+      resolve({ width: img.width, height: img.height });
+    };
+  });
 }
+
+const width = ref(0);
+const height = ref(0);
+
+watch(
+  () => props.select,
+  async () => {
+    if (props.select && props.select.file) {
+      const { width: w, height: h } = await getImageSize(props.select.file);
+      width.value = w;
+      height.value = h;
+    }
+  },
+);
 </script>
 
 <style scoped></style>

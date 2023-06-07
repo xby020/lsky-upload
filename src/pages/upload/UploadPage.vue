@@ -72,15 +72,15 @@ const isDark = isDarkColors();
 
 const uploadList = ref<FileInfo[]>([]);
 
+// 从utools插件进入
 onPluginEnter(({ code, type, payload }) => {
-  console.log(code, type, payload);
-
   if (code === 'upload') {
     if (type === 'files') {
       const files = getFiles(payload);
       uploadList.value = files.map((file) => {
         return {
           id: getRandomId(),
+          name: file.name,
           file,
           progress: 0,
           status: 'waiting',
@@ -167,7 +167,7 @@ function onDrop(file: File[] | null) {
 }
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop);
 
-// 上传文件列表
+// 上传文件列表中所有图片
 async function uploadFileList() {
   console.log('upload!');
 }
@@ -183,6 +183,7 @@ async function btnUploadClick() {
     showFileDialog();
   }
 }
+
 function getFileSize(file: File) {
   let size = file.size;
   const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];

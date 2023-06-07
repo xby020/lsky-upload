@@ -139,7 +139,6 @@ function deleteFile(index: number) {
 }
 
 function choosenFile(file: FileInfo) {
-  console.log(file);
   emits('update:select', file);
 }
 </script>
