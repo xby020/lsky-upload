@@ -4,7 +4,10 @@
     <div class="w-full h-full flex flex-col" v-if="select">
       <!-- preview -->
       <div
-        class="w-full rounded-lg bg-base-200 border-secondary/20 overflow-hidden"
+        class="w-full rounded-lg border-secondary/20 overflow-hidden gradient-wrap"
+        :style="gradientClass"
+        ref="imgContainerRef"
+        :key="select.id"
       >
         <img :src="select.url" alt="" class="w-full h-200px object-contain" />
       </div>
@@ -43,6 +46,7 @@
 
 <script setup lang="ts">
 import { FileInfo } from '@/types/files';
+import Grade from 'grade-js';
 
 interface Props {
   files?: FileInfo[];
@@ -52,6 +56,37 @@ interface Props {
 const props = defineProps<Props>();
 
 const emits = defineEmits(['update:files']);
+
+// img preview
+const imgContainerRef = ref<HTMLElement>();
+// 从左上到右下的渐变色
+const gradientClass = ref(
+  'background: linear-gradient(45deg, #ffffff00, #ffffff00,);',
+);
+async function setGradient() {
+  const imgContainer = document.querySelectorAll('.gradient-wrap');
+  await nextTick();
+  return new Promise((resolve) => {
+    Grade(imgContainer, null, function (data: any) {
+      resolve(data[0].gradientData);
+    });
+  });
+}
+
+const selectId = computed(() => props.select?.id);
+watch(
+  selectId,
+  async () => {
+    const gradient: any = await setGradient();
+    const formRgba = gradient[0].rgba;
+    const toRgba = gradient[1].rgba;
+    console.log(formRgba, toRgba);
+    const fromColor = `rgba(${formRgba[0]}, ${formRgba[1]}, ${formRgba[2]}, ${formRgba[3]})`;
+    const toColor = `rgba(${toRgba[0]}, ${toRgba[1]}, ${toRgba[2]}, ${toRgba[3]})`;
+    gradientClass.value = `background: linear-gradient(45deg, ${fromColor}, ${toColor});`;
+  },
+  { immediate: true },
+);
 
 async function getImageSize(file: File) {
   // 从File对象中获取图片的宽高
