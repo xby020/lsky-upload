@@ -1,7 +1,9 @@
 <template>
   <div
-    class="w-full h-full flex flex-col justify-start items-center px-8 py-4 gap-4"
+    class="relative w-full h-full flex flex-col justify-start items-center px-8 py-4 gap-4 overflow-hidden"
   >
+    <!-- notification -->
+    <system-notification></system-notification>
     <!-- Titie -->
     <div class="w-full h-72px d-navbar border-2 border-primary/20 rounded-lg">
       <!-- start -->

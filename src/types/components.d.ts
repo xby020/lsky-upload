@@ -15,5 +15,6 @@ declare module '@vue/runtime-core' {
     IMdiUpload: typeof import('~icons/mdi/upload')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SystemNotification: typeof import('./../components/systemNotification/SystemNotification.vue')['default']
   }
 }
