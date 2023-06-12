@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { AxiosRequestConfig, AxiosInstance } from 'axios';
+import type { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios';
 import { merge, get } from 'lodash';
 import cookies from '@/utils/cookies';
 
@@ -20,11 +20,10 @@ function createService<T = any>(): AxiosInstance {
     (error) => {
       // 发送失败
       console.log(error);
-      window.$notification.error({
-        content: '请求失败',
-        meta: JSON.stringify(error),
+      window.$notice.error({
+        title: '请求失败',
+        content: JSON.stringify(error),
         duration: 2000,
-        keepAliveOnHover: true,
       });
       return Promise.reject(error);
     },
@@ -37,7 +36,7 @@ function createService<T = any>(): AxiosInstance {
       if (resData.code) {
         // code存在，标准结构
         if (resData.code !== 200) {
-          window.$message.error(resData.msg);
+          window.$notice.error(resData.msg);
           throw resData;
         }
         return resData;
@@ -51,7 +50,7 @@ function createService<T = any>(): AxiosInstance {
       }
     },
     (error) => {
-      window.$message.error(error.toString());
+      window.$notice.error(error.toString());
       // 响应错误
       throw error;
     },
@@ -71,7 +70,7 @@ function createRequest(service: AxiosInstance) {
         'Content-Type': get(config, 'headers.Content-Type', 'application/json'),
       },
       // baseURL: import.meta.env.VITE_API_URL,
-      timeout: 5000,
+      timeout: 60 * 1000,
       data: {},
     };
 

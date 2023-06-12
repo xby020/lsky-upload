@@ -53,4 +53,5 @@ export type FileInfo = {
    * @type {('waiting' | 'uploading' | 'success' | 'error')}
    */
   status: 'waiting' | 'uploading' | 'success' | 'error';
+  links?: Record<string, any>;
 };

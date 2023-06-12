@@ -38,6 +38,7 @@
         <div
           class="d-btn d-btn-sm d-btn-circle d-tooltip flex justify-center items-center"
           data-tip="设置"
+          @click="goTo('Settings')"
         >
           <div
             class="text-xl flex justify-center items-center i-mdi-cog text-neutral-content"
@@ -51,6 +52,21 @@
             class="text-2xl flex justify-center items-center i-mdi-information text-neutral-content"
           ></div>
         </div>
+
+        <!-- user -->
+        <div class="d-btn flex gap-2">
+          <div class="d-avatar">
+            <div class="w-36px rounded-full">
+              <img :src="userInfo.avatar" alt="" class="object-cover" />
+            </div>
+          </div>
+
+          <div class="flex flex-col">
+            <div class="text-base font-bold select-none text-secondary">
+              {{ userInfo.name }}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -62,6 +78,8 @@
 </template>
 
 <script setup lang="ts">
+import { useUserStore } from '@/store/modules/user';
+
 const route = useRoute();
 const router = useRouter();
 
@@ -82,6 +100,19 @@ const menuList = ref([
 function goTo(route: string) {
   router.push({ name: route });
 }
+
+// user profile
+const userStore = useUserStore();
+const userInfo = reactive({
+  name: '未登录',
+  avatar: 'https://docs.lsky.pro/logo.png',
+});
+
+onMounted(async () => {
+  await userStore.getProfile();
+  userInfo.name = userStore.name || '未登录';
+  userInfo.avatar = userStore.avatar || 'https://docs.lsky.pro/logo.png';
+});
 </script>
 
 <style scoped></style>

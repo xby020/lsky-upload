@@ -110,8 +110,6 @@ const fileList = computed({
       return {
         ...fileInfo,
         url: getFileUrl(fileInfo),
-        progress: 0,
-        status: 'waiting',
       };
     });
   },

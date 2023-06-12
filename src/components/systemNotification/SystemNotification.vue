@@ -25,20 +25,11 @@
 </template>
 
 <script setup lang="ts">
-interface Notification {
-  id?: string;
-  title?: string;
-  content?: string;
-  type: 'success' | 'info' | 'warning' | 'error';
-  typeClass?: string;
-  typeIcon?: string;
-  duration?: number;
-  timer?: any;
-}
+import { Notice } from '@/types/window';
 
-const notificationList = ref<Notification[]>([]);
+const notificationList = ref<Notice.NoticeInfo[]>([]);
 
-function createNotication(notification: Notification) {
+function createNotication(notification: Notice.NoticeInfo) {
   const randomId = Math.random().toString(36).slice(-8);
   notification.id = randomId;
   notification.duration = notification.duration || 3000;
@@ -80,19 +71,24 @@ watch(notificationList, (newVal) => {
   }
 });
 
-const notice = createNotication;
+function sendNotice(
+  info: Omit<Notice.NoticeInfo, 'type'> | string,
+  type: Notice.NoticeInfo['type'],
+) {
+  if (typeof info === 'string') {
+    createNotication({ title: info, type });
+  } else {
+    createNotication({ ...info, type });
+  }
+}
 
-notice.prototype.success = (title: string, content?: string) =>
-  createNotication({ title, content, type: 'success' });
-
-notice.prototype.info = (title: string, content?: string) =>
-  createNotication({ title, content, type: 'info' });
-
-notice.prototype.warning = (title: string, content?: string) =>
-  createNotication({ title, content, type: 'warning' });
-
-notice.prototype.error = (title: string, content?: string) =>
-  createNotication({ title, content, type: 'error' });
+const notice: Notice.Notice = {
+  create: createNotication,
+  success: (info) => sendNotice(info, 'success'),
+  info: (info) => sendNotice(info, 'info'),
+  warning: (info) => sendNotice(info, 'warning'),
+  error: (info) => sendNotice(info, 'error'),
+};
 
 onMounted(() => {
   window.$notice = notice;

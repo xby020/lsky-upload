@@ -45,7 +45,7 @@
 
     <!-- right -->
     <div class="w-2/5 h-full border-2 card-board" v-if="uploadList.length > 0">
-      <img-preview :files="uploadList" :select="showFileInfo"></img-preview>
+      <img-preview :files="true" :select="showFileInfo"></img-preview>
     </div>
   </div>
 </template>
@@ -67,13 +67,24 @@ import {
 } from 'uTools';
 import ImgList from './components/imgList/ImgList.vue';
 import ImgPreview from './components/imgPreview/ImgPreview.vue';
-
-const isDark = isDarkColors();
+import { useUserStore } from '@/store/modules/user';
 
 const uploadList = ref<FileInfo[]>([]);
+const userStore = useUserStore();
+
+const { token, choosenStrategy } = storeToRefs(userStore);
+
+onMounted(async () => {
+  // 检测用户是否登录
+  if (!token.value) {
+    // 登录
+    await userStore.login();
+  }
+});
 
 // 从utools插件进入
-onPluginEnter(({ code, type, payload }) => {
+onPluginEnter(async ({ code, type, payload }) => {
+  console.log(code, type, payload);
   if (code === 'upload') {
     if (type === 'files') {
       const files = getFiles(payload);
@@ -168,8 +179,25 @@ function onDrop(file: File[] | null) {
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop);
 
 // 上传文件列表中所有图片
-async function uploadFileList() {
-  console.log('upload!');
+async function uploadFileList(fileList: FileInfo[]) {
+  fileList.forEach(async (f) => {
+    const fileInfo = uploadList.value.find((file) => file.id === f.id);
+    if (fileInfo) {
+      fileInfo.status = 'uploading';
+      try {
+        const res = await userStore.uploadImg(f, choosenStrategy.value);
+        if (res) {
+          console.log(uploadList.value);
+          fileInfo.status = 'success';
+          fileInfo.links = res.links;
+        } else {
+          fileInfo.status = 'error';
+        }
+      } catch (error) {
+        fileInfo.status = 'error';
+      }
+    }
+  });
 }
 
 // 上传图标点击
@@ -178,7 +206,7 @@ const unUploadFileList = computed(() => {
 });
 async function btnUploadClick() {
   if (unUploadFileList.value.length > 0) {
-    uploadFileList();
+    uploadFileList(unUploadFileList.value);
   } else {
     showFileDialog();
   }
