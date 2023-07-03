@@ -108,7 +108,7 @@ async function handleSave() {
 const { choosenStrategy } = storeToRefs(userStore);
 const strategies = ref<LskyStrategy[]>([]);
 onMounted(async () => {
-  strategies.value = await userStore.getStrategies();
+  strategies.value = (await userStore.getStrategies()) || [];
 });
 </script>
 

@@ -44,14 +44,6 @@
             class="text-xl flex justify-center items-center i-mdi-cog text-neutral-content"
           ></div>
         </div>
-        <div
-          class="d-btn d-btn-sm d-btn-circle d-tooltip flex justify-center items-center"
-          data-tip="关于本项目"
-        >
-          <div
-            class="text-2xl flex justify-center items-center i-mdi-information text-neutral-content"
-          ></div>
-        </div>
 
         <!-- user -->
         <div class="d-btn flex gap-2">

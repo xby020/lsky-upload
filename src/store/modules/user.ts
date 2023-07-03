@@ -148,6 +148,15 @@ export const useUserStore = defineStore({
       }
     },
     async getProfile() {
+      const { token, email, password, baseUrl } = this;
+      if (!baseUrl) {
+        window.$notice.warning('请设置接口地址');
+        return false;
+      }
+      if (!email || !password) {
+        window.$notice.warning('请先设置邮箱和密码');
+        return false;
+      }
       const res = await this.req({
         url: '/profile',
         method: 'get',
@@ -162,6 +171,15 @@ export const useUserStore = defineStore({
       this.save();
     },
     async getStrategies() {
+      const { token, email, password, baseUrl } = this;
+      if (!baseUrl) {
+        window.$notice.warning('请设置接口地址');
+        return false;
+      }
+      if (!email || !password) {
+        window.$notice.warning('请先设置邮箱和密码');
+        return false;
+      }
       const res = await this.req<{ strategies: LskyStrategy[] }>({
         url: '/strategies',
         method: 'get',
@@ -177,6 +195,15 @@ export const useUserStore = defineStore({
       return strategies;
     },
     async uploadImg(file: FileInfo, strategyId: number) {
+      const { token, email, password, baseUrl } = this;
+      if (!baseUrl) {
+        window.$notice.warning('请设置接口地址');
+        return false;
+      }
+      if (!email || !password) {
+        window.$notice.warning('请先设置邮箱和密码');
+        return false;
+      }
       const formData = new FormData();
       formData.append('file', file.file);
       formData.append('strategy_id', strategyId.toString());
@@ -200,6 +227,15 @@ export const useUserStore = defineStore({
       return res;
     },
     async getAlbums(options: AlbumsQueryParams) {
+      const { token, email, password, baseUrl } = this;
+      if (!baseUrl) {
+        window.$notice.warning('请设置接口地址');
+        return false;
+      }
+      if (!email || !password) {
+        window.$notice.warning('请先设置邮箱和密码');
+        return false;
+      }
       const res = await this.req<AlbumsQueryResponse>({
         url: '/albums',
         method: 'get',
@@ -208,6 +244,15 @@ export const useUserStore = defineStore({
       return res.data;
     },
     async getImages(options: any) {
+      const { token, email, password, baseUrl } = this;
+      if (!baseUrl) {
+        window.$notice.warning('请设置接口地址');
+        return false;
+      }
+      if (!email || !password) {
+        window.$notice.warning('请先设置邮箱和密码');
+        return false;
+      }
       const res = await this.req({
         url: '/images',
         method: 'get',

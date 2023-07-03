@@ -12,10 +12,20 @@
 </template>
 
 <script setup lang="ts">
-import { isDarkColors } from 'uTools';
+import { isDarkColors, onPluginEnter } from 'uTools';
 
 // dark theme
 const isDark = useDark();
+
+onMounted(() => {
+  onPluginEnter(({ code, type, payload }) => {
+    console.log('app');
+    window.$notice({
+      title: 'onPluginEnter',
+      message: JSON.stringify({ code, type, payload }),
+    });
+  });
+});
 </script>
 
 <style scoped>

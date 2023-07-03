@@ -1,16 +1,18 @@
 <template>
   <div class="w-full h-full card-board flex gap-2 p-4">
     <div class="w-2/3 h-full card-board flex flex-col gap-2 p-2">
-      <select class="d-select w-full max-w-xs" v-if="albums.length">
-        <option
-          v-for="album in albums"
-          :key="album.id"
-          :selected="selectAlbumId === album.id"
-        >
+      <select
+        class="d-select w-full max-w-xs"
+        v-model="selectAlbumId"
+        v-if="albums.length"
+      >
+        <option v-for="album in albums" :key="album.id" :value="album.id">
           {{ album.name }}
         </option>
       </select>
-      <div class="text-lg text-accent font-bold">默认相册</div>
+      <div class="text-lg text-accent font-bold">
+        {{ albums.find((item) => item.id === selectAlbumId)?.name }}
+      </div>
 
       <div class="w-full flex-auto flex flex-wrap gap-2 overflow-y-auto">
         <div
@@ -40,7 +42,7 @@ import ImgPreview from '../upload/components/imgPreview/ImgPreview.vue';
 
 const userStore = useUserStore();
 
-const albums = ref<AlbumsQueryResponse['data']>([]);
+const albums = ref<{ name: string; id: number }[]>([]);
 const selectAlbumId = ref(0);
 
 async function getAlbums() {
@@ -49,8 +51,10 @@ async function getAlbums() {
     order: 'newest',
     keyword: '',
   });
-  albums.value = res;
-  selectAlbumId.value = res[0] ? res[0].id : 0;
+  if (res) {
+    albums.value = [{ id: 0, name: '默认相册' }, ...res];
+    selectAlbumId.value = 0;
+  }
 }
 
 interface ImagesInfo {
@@ -84,8 +88,7 @@ function handleChoosenImage(img: ImagesInfo) {
   choosenImage.value = img;
 }
 
-onMounted(async () => {
-  await getAlbums();
+async function getAlbumsImage() {
   const res = await userStore.getImages({
     page: 1,
     order: 'newest',
@@ -93,7 +96,18 @@ onMounted(async () => {
     album_id: selectAlbumId.value || null,
   });
   console.log(res);
-  images.value = res.data;
+  if (res) {
+    images.value = res.data;
+  }
+}
+
+onMounted(async () => {
+  await getAlbums();
+  await getAlbumsImage();
+});
+
+watch(selectAlbumId, async () => {
+  await getAlbumsImage();
 });
 </script>
 

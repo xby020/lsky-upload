@@ -5,7 +5,7 @@
       <!-- preview -->
       <div class="w-full rounded-lg overflow-hidden" :key="select.id">
         <img
-          :src="files ? select.url : select.links.thumbnail_url"
+          :src="files ? select.url : select.links?.thumbnail_url"
           alt=""
           class="w-full h-200px object-contain"
         />
@@ -15,9 +15,19 @@
 
       <!-- info -->
       <div class="w-full flex-auto p-2 text-info">
-        <h2 class="text-lg text-primary font-semibold truncate">
-          {{ select.name }}
-        </h2>
+        <div class="w-full flex items-center gap-2">
+          <h2 class="text-lg text-primary font-semibold truncate">
+            {{ select.name || select.origin_name }}
+          </h2>
+          <div
+            class="d-btn d-btn-sm d-btn-outline i-mdi-content-copy"
+            @click="
+              copyImgToClipboard(
+                files ? select.url : select.links?.thumbnail_url,
+              )
+            "
+          ></div>
+        </div>
         <!-- info -->
         <div class="flex gap-2 py-2">
           <!-- size -->
@@ -76,12 +86,9 @@
 </template>
 
 <script setup lang="ts">
-import { FileInfo } from '@/types/files';
-import ImgList from '../imgList/ImgList.vue';
-
 interface Props {
   files?: boolean;
-  select?: FileInfo;
+  select?: any;
 }
 
 const props = defineProps<Props>();
@@ -114,8 +121,8 @@ watch(
       }
     } else {
       console.log(props.select);
-      width.value = props.select.width;
-      height.value = props.select.height;
+      width.value = props.select?.width;
+      height.value = props.select?.height;
     }
   },
 );
@@ -126,6 +133,27 @@ function copyUrlToClipboard(url: string) {
   console.log(url);
   copy(url);
   window.$notice.success('复制成功');
+}
+
+function copyImgToClipboard(url: string) {
+  const img = new Image();
+  img.src = url;
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext('2d');
+    ctx?.drawImage(img, 0, 0);
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const item = new ClipboardItem({ 'image/png': blob });
+        navigator.clipboard.write([item]);
+        window.$notice.success('复制成功');
+      } else {
+        window.$notice.error('复制失败');
+      }
+    });
+  };
 }
 </script>
 
